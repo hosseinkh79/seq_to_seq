@@ -78,7 +78,7 @@ class Seq_To_Seq(nn.Module):
         self.decoder = Decoder(configs=configs)
         self.device = device
 
-    def forward(self, src, trg, teacher_forcing_ratio, device):
+    def forward(self, src, trg, teacher_forcing_ratio):
         # src = [src length, batch size]
         # trg = [trg length, batch size]
         # teacher_forcing_ratio is probability to use teacher forcing
@@ -99,6 +99,7 @@ class Seq_To_Seq(nn.Module):
             # insert input token embedding, previous hidden and previous cell states
             # receive output tensor (predictions) and new hidden and cell states
             output, hidden, cell = self.decoder(input, hidden, cell)
+            # print(f'model decoder output dim is : {output.shape}')
             # output = [batch size, output dim]
             # hidden = [n layers, batch size, hidden dim]
             # cell = [n layers, batch size, hidden dim]

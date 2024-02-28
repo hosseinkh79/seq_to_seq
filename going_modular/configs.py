@@ -1,6 +1,6 @@
 configs = {
-    'input_dim': 5893,  # len(en_vocab)
-    'output_dim': 7853, # len(de_vocab)
+    'input_dim': 7853,  # len(de_vocab)
+    'output_dim': 5893, # len(en_vocab)
     'embedding_dim': 256,
     'hidden_dim': 512,
     'num_layers': 2,

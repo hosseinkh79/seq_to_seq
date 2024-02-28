@@ -15,8 +15,8 @@ def one_step_train(model,
     for i, batch in enumerate(data_loader):
         optimizer.zero_grad()
 
-        src = batch['en_ids'].to(device)
-        trg = batch['de_ids'].to(device)
+        src = batch['de_ids'].to(device)
+        trg = batch['en_ids'].to(device)
 
         output = model(src, trg, configs['teacher_force_ratio'])
         output_dim = output.shape[-1]
