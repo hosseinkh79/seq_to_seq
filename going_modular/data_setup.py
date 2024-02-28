@@ -5,6 +5,8 @@ import torchtext
 import datasets
 import spacy
 
+from tqdm import tqdm
+
 dataset = datasets.load_dataset('bentrevett/multi30k')
 
 train_data, valid_data, test_data = (dataset['train'], dataset['validation'], dataset['test'])
@@ -182,6 +184,12 @@ def translate_sentence( sentence,
         tokens = en_vocab.lookup_tokens(inputs)
     return tokens
 
+def translate_all_test_data(model, device, test_data=test_data):
+    test_preds = [translate_sentence(example['de'], model, device) for example in tqdm(test_data)]
+    return test_preds
 
 
+
+def get_test_data():
+    return test_data
 
