@@ -46,25 +46,27 @@ def one_step_test(model,
     model.eval()
     
     test_loss = 0
-    for i, batch in enumerate(data_loader):
-        optimizer.zero_grad()
+    with torch.inference_mode():
+        for i, batch in enumerate(data_loader):
+            optimizer.zero_grad()
 
-        src = batch['en_ids'].to(device)
-        trg = batch['de_ids'].to(device)
+            src = batch['en_ids'].to(device)
+            trg = batch['de_ids'].to(device)
 
-        output = model(src, trg, 0)
-        output_dim = output.shape[-1]
-        output = output[1:].view(-1, output_dim)
+            output = model(src, trg, 0)
+            output_dim = output.shape[-1]
+            output = output[1:].view(-1, output_dim)
 
-        trg = trg[1:].view(-1)
+            trg = trg[1:].view(-1)
 
-        loss = loss_fn(output, trg)
+            loss = loss_fn(output, trg)
 
-        test_loss += loss.item()
+            test_loss += loss.item()
 
-    total_loss = test_loss/len(data_loader)
+        total_loss = test_loss/len(data_loader)
 
     return total_loss
+
 
 def train(model,
           train_loader,

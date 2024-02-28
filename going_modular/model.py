@@ -71,14 +71,14 @@ class Decoder(nn.Module):
 
 
 class Seq_To_Seq(nn.Module):
-    def __init__(self, configs):
+    def __init__(self, configs, device):
         super().__init__()
 
         self.encoder = Encoder(configs=configs)
         self.decoder = Decoder(configs=configs)
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = device
 
-    def forward(self, src, trg, teacher_forcing_ratio):
+    def forward(self, src, trg, teacher_forcing_ratio, device):
         # src = [src length, batch size]
         # trg = [trg length, batch size]
         # teacher_forcing_ratio is probability to use teacher forcing
