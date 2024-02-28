@@ -48,10 +48,9 @@ def one_step_test(model,
     test_loss = 0
     with torch.inference_mode():
         for i, batch in enumerate(data_loader):
-            optimizer.zero_grad()
 
-            src = batch['en_ids'].to(device)
-            trg = batch['de_ids'].to(device)
+            src = batch['de_ids'].to(device)
+            trg = batch['en_ids'].to(device)
 
             output = model(src, trg, 0)
             output_dim = output.shape[-1]
