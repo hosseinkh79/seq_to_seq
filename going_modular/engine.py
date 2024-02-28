@@ -30,7 +30,7 @@ def one_step_train(model,
         torch.nn.utils.clip_grad_norm_(model.parameters(), configs['clip'])
         optimizer.step()
 
-        loss += loss.item()
+        train_loss += loss.item()
 
     total_loss = train_loss/len(data_loader)
 
@@ -60,7 +60,7 @@ def one_step_test(model,
 
         loss = loss_fn(output, trg)
 
-        loss += loss.item()
+        test_loss += loss.item()
 
     total_loss = test_loss/len(data_loader)
 
@@ -79,9 +79,7 @@ def train(model,
         'test_loss': []
     }
 
-    print('\n')
-
-    for epoch in tqdm(range(epochs), desc="Training Progress"):
+    for epoch in range(epochs):
 
         train_loss = one_step_train(model=model,
                                     data_loader=train_loader,
