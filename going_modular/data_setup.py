@@ -155,42 +155,29 @@ def translate_sentence( sentence,
                         lower=True,
                         sos_token=sos_token,
                         eos_token=eos_token):
-    print(f'1')
+
     model = model.to(device)
-    print(f'11')
     model.eval()
-    print(f'111')
 
     with torch.no_grad():
-        print(f'1111')
         if isinstance(sentence, str):
             tokens = [token.text for token in de_nlp.tokenizer(sentence)]
         else:
             tokens = [token for token in sentence]
         if lower:
-            print(f'11111')
             tokens = [token.lower() for token in tokens]
-        print(f'111111')
         tokens = [sos_token] + tokens + [eos_token]
         ids = de_vocab.lookup_indices(tokens)
         tensor = torch.LongTensor(ids).unsqueeze(-1).to(device)
-        print(f'2')
         hidden, cell = model.encoder(tensor)
-        print(f'22')
         inputs = en_vocab.lookup_indices([sos_token])
-        print(f'222')
         for _ in range(max_output_length):
-            print(f'3')
             inputs_tensor = torch.LongTensor([inputs[-1]]).to(device)
-            print(f'33')
             output, hidden, cell = model.decoder(inputs_tensor, hidden, cell)
-            print(f'333')
             predicted_token = output.argmax(-1).item()
-            print(f'4')
             inputs.append(predicted_token)
-            print(f'44')
             if predicted_token == en_vocab[eos_token]:
-                print(f'444')
+
                 break
         tokens = en_vocab.lookup_tokens(inputs)
     return tokens
