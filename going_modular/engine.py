@@ -79,6 +79,8 @@ def train(model,
         'test_loss': []
     }
 
+    print('\n')
+
     for epoch in tqdm(range(epochs), desc="Training Progress"):
 
         train_loss = one_step_train(model=model,

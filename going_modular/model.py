@@ -76,6 +76,7 @@ class Seq_To_Seq(nn.Module):
 
         self.encoder = Encoder(configs=configs)
         self.decoder = Decoder(configs=configs)
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     def forward(self, src, trg, teacher_forcing_ratio):
         # src = [src length, batch size]
@@ -86,7 +87,7 @@ class Seq_To_Seq(nn.Module):
         trg_length = trg.shape[0]
         trg_vocab_size = self.decoder.output_dim
         # tensor to store decoder outputs
-        outputs = torch.zeros(trg_length, batch_size, trg_vocab_size)
+        outputs = torch.zeros(trg_length, batch_size, trg_vocab_size).to(self.device)
         # last hidden state of the encoder is used as the initial hidden state of the decoder
         hidden, cell = self.encoder(src)
         # hidden = [n layers * n directions, batch size, hidden dim]
